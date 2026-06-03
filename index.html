@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>IFGF Cirebon Caregroup Hub</title>
+<style id="theme-override"></style>
+<style id="theme-override"></style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -107,7 +109,9 @@
       <h1><i class="ti ti-heart"></i> IFGF Cirebon Caregroup Hub</h1>
       <div class="header-sub" id="month-label"></div>
     </div>
-    <button class="btn" onclick="reloadData()"><i class="ti ti-refresh"></i> Refresh</button>
+    <button class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle tema"><i class="ti ti-sun" id="theme-icon"></i></button>
+      <button class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle tema"><i class="ti ti-moon" id="theme-icon"></i></button>
+      <button class="btn" onclick="reloadData()"><i class="ti ti-refresh"></i> Refresh</button>
   </div>
 
   <div id="error-area"></div>
@@ -247,7 +251,36 @@ function renderAlerts(members) {
   });
   const area=document.getElementById('alerts-area');
   if(!events.length){area.innerHTML='';return;}
-  const now=new Date();
+  // Theme toggle
+const THEME_KEY = "cg-theme";
+let currentTheme = localStorage.getItem(THEME_KEY) || "auto";
+
+function applyTheme(t) {
+  const icon = document.getElementById("theme-icon");
+  const override = document.getElementById("theme-override");
+  if (t === "light") {
+    override.textContent = ":root{--bg:#ffffff;--bg2:#f5f5f5;--bg3:#eeeeee;--text:#1a1a1a;--text2:#555;--text3:#888;--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);--purple-light:#EEEDFE;--purple-dark:#3C3489;--teal-light:#E1F5EE;--teal-dark:#085041;--amber:#FAEEDA;--amber-dark:#633806;--amber-deep:#412402;--red-light:#FCEBEB;}";
+    icon.className = "ti ti-moon";
+  } else if (t === "dark") {
+    override.textContent = ":root{--bg:#1e1e1e;--bg2:#2a2a2a;--bg3:#333;--text:#f0f0f0;--text2:#aaa;--text3:#666;--border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.2);--purple-light:#2e2a5a;--purple-dark:#b0aaff;--teal-light:#0e2e22;--teal-dark:#7ddbb8;--amber:#2e2010;--amber-dark:#f5c47a;--amber-deep:#fde8b0;--red-light:#2e1010;}";
+    icon.className = "ti ti-sun";
+  } else {
+    override.textContent = "";
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    icon.className = prefersDark ? "ti ti-sun" : "ti ti-moon";
+  }
+}
+
+function toggleTheme() {
+  const cycle = { auto: "light", light: "dark", dark: "auto" };
+  currentTheme = cycle[currentTheme] || "auto";
+  localStorage.setItem(THEME_KEY, currentTheme);
+  applyTheme(currentTheme);
+}
+
+applyTheme(currentTheme);
+
+const now=new Date();
   events.sort((a,b)=>a.date.getDate()-b.date.getDate());
   area.innerHTML=`<div class="alert-banner">
     <div class="alert-title"><i class="ti ti-bell"></i> Event bulan ${MONTHS_ID[now.getMonth()]} — ${events.length} orang</div>
