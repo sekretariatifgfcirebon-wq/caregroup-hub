@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Care Group Hub</title>
+<title>IFGF Cirebon Caregroup Hub</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,15 +31,11 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg2); color: var(--text); min-height: 100vh; }
   .app { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
   .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
-  .header h1 { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .header h1 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
   .header h1 i { color: var(--purple); }
   .header-sub { font-size: 13px; color: var(--text2); margin-top: 3px; }
-  .header-right { display: flex; gap: 8px; align-items: center; }
   .btn { font-size: 13px; padding: 7px 14px; border-radius: var(--radius); border: 1px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background .15s; }
   .btn:hover { background: var(--bg3); }
-  .btn-primary { background: var(--purple); color: #fff; border-color: var(--purple); }
-  .btn-primary:hover { opacity: .88; }
-  .btn-admin-on { border-color: var(--purple); color: var(--purple); font-weight: 600; }
   .controls { display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .controls input, .controls select { font-size: 14px; padding: 8px 12px; border: 1px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); outline: none; }
   .controls input { flex: 1; min-width: 160px; }
@@ -72,12 +68,22 @@
   .date-row i { font-size: 13px; color: var(--text3); flex-shrink: 0; }
   .date-val { margin-left: auto; color: var(--text); font-size: 12px; }
   .milestone-pill { display: inline-flex; align-items: center; gap: 4px; background: var(--teal-light); color: var(--teal-dark); font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-top: 5px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .milestone-pill.belum { background: var(--bg3); color: var(--text3); }
   .month-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; padding: 12px 0 4px; border-bottom: 1px solid var(--border); margin-bottom: 2px; }
   .list-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
   .list-row:last-child { border-bottom: none; }
   .list-info { flex: 1; min-width: 0; }
   .list-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .list-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
+  /* couple row for anniversaries */
+  .couple-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .couple-row:last-child { border-bottom: none; }
+  .couple-avatars { display: flex; flex-shrink: 0; }
+  .couple-avatars .avatar { width: 34px; height: 34px; font-size: 11px; border: 2px solid var(--bg2); }
+  .couple-avatars .avatar:last-child { margin-left: -10px; }
+  .couple-info { flex: 1; min-width: 0; }
+  .couple-names { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .couple-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 10px; margin-bottom: 1.5rem; }
   .stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; }
   .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
@@ -88,36 +94,20 @@
   .error-box { background: var(--red-light); border: 1px solid var(--red); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; color: var(--red); font-size: 14px; line-height: 1.6; }
   .empty { text-align: center; padding: 3rem 1rem; color: var(--text2); font-size: 14px; }
   .empty i { font-size: 36px; display: block; margin-bottom: 10px; color: var(--text3); }
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--bg); border-radius: var(--radius-lg); padding: 1.5rem; width: 100%; max-width: 320px; border: 1px solid var(--border2); }
-  .modal h2 { font-size: 16px; font-weight: 700; margin-bottom: 1rem; }
-  .form-group { margin-bottom: .875rem; }
-  .form-group label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 4px; }
-  .form-group input, .form-group select { width: 100%; font-size: 14px; padding: 8px 12px; border: 1px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); outline: none; }
-  .form-group input:focus { border-color: var(--purple); }
-  .pin-wrap { display: flex; gap: 10px; justify-content: center; margin: .5rem 0; }
-  .pin-digit { width: 52px; height: 56px; font-size: 24px; text-align: center; border: 1px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); outline: none; }
-  .pin-digit:focus { border-color: var(--purple); }
-  .pin-error { color: var(--red); font-size: 12px; text-align: center; margin-top: 6px; display: none; }
-  .btn-row { display: flex; gap: 8px; margin-top: 1.25rem; justify-content: flex-end; }
   .bar-row { margin-bottom: 12px; }
   .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
   .bar-track { height: 8px; background: var(--bg3); border-radius: 999px; overflow: hidden; }
-  .bar-fill { height: 100%; background: var(--purple); border-radius: 999px; transition: width .4s; }
+  .bar-fill { height: 100%; background: var(--purple); border-radius: 999px; }
 </style>
 </head>
 <body>
 <div class="app">
   <div class="header">
     <div>
-      <h1><i class="ti ti-heart"></i> Care Group Hub</h1>
+      <h1><i class="ti ti-heart"></i> IFGF Cirebon Caregroup Hub</h1>
       <div class="header-sub" id="month-label"></div>
     </div>
-    <div class="header-right">
-      <button class="btn" onclick="reloadData()"><i class="ti ti-refresh"></i> Refresh</button>
-      <button class="btn" id="admin-btn" onclick="openAdminLogin()"><i class="ti ti-lock"></i> Admin</button>
-    </div>
+    <button class="btn" onclick="reloadData()"><i class="ti ti-refresh"></i> Refresh</button>
   </div>
 
   <div id="error-area"></div>
@@ -143,48 +133,32 @@
   </div>
 </div>
 
-<!-- Admin PIN modal -->
-<div class="modal-overlay" id="admin-modal">
-  <div class="modal">
-    <h2><i class="ti ti-lock" style="margin-right:6px;color:var(--purple)"></i>Admin login</h2>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Masukkan PIN 4 digit</p>
-    <div class="pin-wrap">
-      <input class="pin-digit" type="password" maxlength="1" id="p0" oninput="pinInput(0)" onkeydown="pinKey(event,0)" />
-      <input class="pin-digit" type="password" maxlength="1" id="p1" oninput="pinInput(1)" onkeydown="pinKey(event,1)" />
-      <input class="pin-digit" type="password" maxlength="1" id="p2" oninput="pinInput(2)" onkeydown="pinKey(event,2)" />
-      <input class="pin-digit" type="password" maxlength="1" id="p3" oninput="pinInput(3)" onkeydown="pinKey(event,3)" />
-    </div>
-    <div class="pin-error" id="pin-error">PIN salah. Coba lagi.</div>
-    <div class="btn-row"><button class="btn" onclick="closeModal('admin-modal')">Batal</button></div>
-  </div>
-</div>
-
 <script>
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQ9HlZLh8RK7d0fiQdo3XuB1pnNdsIjJdYcFsnJBbH8wZBNzXSGUaRIdfgZH-BKAXYWn6zW9YyvUjJ/pub?output=csv';
-const ADMIN_PIN = '1234';
 const MONTHS_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const MMAP = {jan:0,feb:1,mar:2,apr:3,mei:4,may:4,jun:5,jul:6,agu:7,aug:7,sep:8,okt:9,oct:9,nov:10,des:11,dec:11};
 
-let allMembers = [], filtered = [], isAdmin = false, activeTab = 'members';
+let allMembers = [], filtered = [], activeTab = 'members';
 
 function initials(n) { return (n||'').split(' ').map(w=>w[0]).filter(Boolean).slice(0,2).join('').toUpperCase()||'?'; }
 function avColor(n) { let h=0; for(let c of (n||'')) h=(h*31+c.charCodeAt(0))&0xffff; return 'av-'+(h%8); }
 
 function parseDate(s) {
-  if (!s || !s.trim()) return null;
+  if (!s||!s.trim()) return null;
   s = s.trim();
   let m;
   m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (m) { const d = new Date(+m[3],+m[2]-1,+m[1]); return valid(d,+m[3])?d:null; }
+  if (m) { const d=new Date(+m[3],+m[2]-1,+m[1]); return valid(d,+m[3])?d:null; }
   m = s.match(/^(\d{1,2})-([A-Za-z]{2,4})-(\d{2,4})$/);
   if (m) { const mon=MMAP[m[2].toLowerCase()]; if(mon===undefined) return null; let yr=+m[3]; if(yr<100) yr+=1900; const d=new Date(yr,mon,+m[1]); return valid(d,yr)?d:null; }
   m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (m) { const d=new Date(+m[1],+m[2]-1,+m[3]); return valid(d,+m[1])?d:null; }
   return null;
 }
-function valid(d,yr) { return d instanceof Date && !isNaN(d) && yr>1900 && yr<2100; }
+function valid(d,yr) { return d instanceof Date&&!isNaN(d)&&yr>1900&&yr<2100; }
 function fmtShort(d) { if(!d) return '—'; return d.getDate()+' '+MONTHS_ID[d.getMonth()].slice(0,3); }
 function fmtFull(d) { if(!d) return '—'; return d.getDate()+' '+MONTHS_ID[d.getMonth()]+' '+d.getFullYear(); }
+function dateKey(d) { if(!d) return ''; return (d.getMonth()+1)+'-'+d.getDate(); }
 function isThisMonth(d) { if(!d) return false; const n=new Date(); return d.getMonth()===n.getMonth(); }
 function isToday(d) { if(!d) return false; const n=new Date(); return d.getMonth()===n.getMonth()&&d.getDate()===n.getDate(); }
 
@@ -201,7 +175,7 @@ function parseCSVLine(line) {
 
 function dedup(arr) {
   const map={};
-  arr.forEach(m => {
+  arr.forEach(m=>{
     const k=m.name.toLowerCase().trim();
     if(!map[k]||m.raw.Timestamp>map[k].raw.Timestamp) map[k]=m;
   });
@@ -231,8 +205,6 @@ async function reloadData() {
       gender: r['Jenis Kelamin']||'',
       birthday: parseDate(r['Tanggal Lahir']),
       anniversary: parseDate(r['Tanggal Pernikahan']),
-      spouseName: r['Nama Lengkap Pasangan']||'',
-      spouseBirthday: parseDate(r['Tanggal Lahir Pasangan']),
       discipleship: r['Kelas Discipleship Journey terakhir yang diikuti.']||'',
       ministry: r['Sedang melayani sebagai']||'',
       marital: r['Status pernikahan']||'',
@@ -268,10 +240,10 @@ function applyFilters() {
 
 function renderAlerts(members) {
   const events=[];
+  // only member birthdays, no spouse
   members.forEach(m=>{
     if(isThisMonth(m.birthday)) events.push({name:m.name,type:'Ulang Tahun',date:m.birthday,today:isToday(m.birthday)});
     if(isThisMonth(m.anniversary)) events.push({name:m.name,type:'Anniversari Pernikahan',date:m.anniversary,today:isToday(m.anniversary)});
-    if(isThisMonth(m.spouseBirthday)&&m.spouseName) events.push({name:m.spouseName+' (pasangan)',type:'Ulang Tahun',date:m.spouseBirthday,today:isToday(m.spouseBirthday)});
   });
   const area=document.getElementById('alerts-area');
   if(!events.length){area.innerHTML='';return;}
@@ -308,10 +280,116 @@ function renderMembers() {
       <div class="date-rows">
         <div class="date-row"><i class="ti ti-cake"></i>Ulang tahun<span class="date-val">${fmtShort(m.birthday)}</span></div>
         ${m.anniversary?`<div class="date-row"><i class="ti ti-heart"></i>Anniversari<span class="date-val">${fmtShort(m.anniversary)}</span></div>`:''}
-        ${m.spouseName?`<div class="date-row"><i class="ti ti-user"></i><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70px;">${m.spouseName}</span><span class="date-val">${fmtShort(m.spouseBirthday)}</span></div>`:''}
-        ${m.discipleship&&m.discipleship!=='Belum ikut'?`<div><span class="milestone-pill"><i class="ti ti-award" style="font-size:11px;"></i>${m.discipleship}</span></div>`:''}
+        ${m.discipleship?`<div><span class="milestone-pill ${m.discipleship==='Belum ikut'?'belum':''}"><i class="ti ti-award" style="font-size:11px;"></i>${m.discipleship==='Belum ikut'?'Belum ikut DJ':m.discipleship}</span></div>`:''}
       </div>
     </div>`).join('')}</div>`;
+}
+
+function renderBirthdays() {
+  // members only, no spouses
+  const items = filtered.filter(m=>m.birthday)
+    .sort((a,b)=>a.birthday.getMonth()*100+a.birthday.getDate()-(b.birthday.getMonth()*100+b.birthday.getDate()));
+  document.getElementById('tab-content').innerHTML = renderListByMonth(items, m=>m.birthday, ()=>'Ulang Tahun');
+}
+
+function renderAnniversaries() {
+  // group members by anniversary date key, show as couples
+  const withAnniv = filtered.filter(m=>m.anniversary);
+  // bucket by date key
+  const buckets = {};
+  withAnniv.forEach(m=>{
+    const k = dateKey(m.anniversary);
+    if(!buckets[k]) buckets[k]=[];
+    buckets[k].push(m);
+  });
+
+  // build couple entries
+  const couples = [];
+  Object.values(buckets).forEach(group=>{
+    if(group.length>=2){
+      // pair them up (take first two as a couple, rest as separate)
+      for(let i=0;i<group.length;i+=2){
+        if(i+1<group.length){
+          couples.push({type:'couple', p1:group[i], p2:group[i+1], date:group[i].anniversary});
+        } else {
+          couples.push({type:'single', m:group[i], date:group[i].anniversary});
+        }
+      }
+    } else {
+      couples.push({type:'single', m:group[0], date:group[0].anniversary});
+    }
+  });
+
+  couples.sort((a,b)=>a.date.getMonth()*100+a.date.getDate()-(b.date.getMonth()*100+b.date.getDate()));
+
+  if(!couples.length){document.getElementById('tab-content').innerHTML='<div class="empty"><i class="ti ti-heart"></i>Tidak ada anniversari tercatat.</div>';return;}
+
+  const grouped={};
+  couples.forEach(c=>{
+    const key=MONTHS_ID[c.date.getMonth()];
+    if(!grouped[key]) grouped[key]=[];
+    grouped[key].push(c);
+  });
+
+  document.getElementById('tab-content').innerHTML = MONTHS_ID.filter(k=>grouped[k]).map(key=>`
+    <div class="month-label">${key}</div>
+    ${grouped[key].map(c=>{
+      const isCouple = c.type==='couple';
+      const todayFlag = isToday(c.date);
+      const monthFlag = isThisMonth(c.date);
+      if(isCouple){
+        return `<div class="couple-row">
+          <div class="couple-avatars">
+            <div class="avatar ${avColor(c.p1.name)}">${initials(c.p1.name)}</div>
+            <div class="avatar ${avColor(c.p2.name)}">${initials(c.p2.name)}</div>
+          </div>
+          <div class="couple-info">
+            <div class="couple-names">${c.p1.name} &amp; ${c.p2.name}</div>
+            <div class="couple-sub">Anniversari Pernikahan · ${fmtFull(c.date)}${c.p1.group?' · '+c.p1.group:''}</div>
+          </div>
+          ${todayFlag?'<span class="badge badge-today">Hari ini!</span>':(monthFlag?'<span class="badge badge-month">Bulan ini</span>':'')}
+        </div>`;
+      } else {
+        return `<div class="list-row">
+          <div class="avatar ${avColor(c.m.name)}" style="width:36px;height:36px;font-size:11px;">${initials(c.m.name)}</div>
+          <div class="list-info">
+            <div class="list-name">${c.m.name}</div>
+            <div class="list-sub">Anniversari Pernikahan · ${fmtFull(c.date)}${c.m.group?' · '+c.m.group:''}</div>
+          </div>
+          ${todayFlag?'<span class="badge badge-today">Hari ini!</span>':(monthFlag?'<span class="badge badge-month">Bulan ini</span>':'')}
+        </div>`;
+      }
+    }).join('')}`).join('');
+}
+
+function renderMilestones() {
+  const items = filtered.filter(m=>m.discipleship);
+  if(!items.length){document.getElementById('tab-content').innerHTML='<div class="empty"><i class="ti ti-award"></i>Tidak ada data discipleship.</div>';return;}
+
+  // group: 'Belum ikut' → label 'Belum ikut DJ', others by their class name
+  const grouped={};
+  items.forEach(m=>{
+    const key = (!m.discipleship||m.discipleship==='Belum ikut') ? 'Belum ikut DJ' : m.discipleship;
+    if(!grouped[key]) grouped[key]=[];
+    grouped[key].push(m);
+  });
+
+  // sort: Belum ikut DJ last
+  const keys = Object.keys(grouped).sort((a,b)=>{
+    if(a==='Belum ikut DJ') return 1;
+    if(b==='Belum ikut DJ') return -1;
+    return a.localeCompare(b);
+  });
+
+  document.getElementById('tab-content').innerHTML = keys.map(kelas=>`
+    <div class="month-label">${kelas} (${grouped[kelas].length} orang)</div>
+    ${grouped[kelas].map(m=>`<div class="list-row">
+      <div class="avatar ${avColor(m.name)}" style="width:36px;height:36px;font-size:11px;">${initials(m.name)}</div>
+      <div class="list-info">
+        <div class="list-name">${m.name}</div>
+        <div class="list-sub">${m.group||''}${m.ministry&&m.ministry!=='Belum melayani'?' · '+m.ministry:''}</div>
+      </div>
+    </div>`).join('')}`).join('');
 }
 
 function renderListByMonth(items, getDate, getLabel) {
@@ -338,37 +416,9 @@ function renderListByMonth(items, getDate, getLabel) {
     }).join('')}`).join('');
 }
 
-function renderBirthdays() {
-  const items=filtered.filter(m=>m.birthday);
-  const spouses=filtered.filter(m=>m.spouseBirthday&&m.spouseName).map(m=>({name:m.spouseName+' (pasangan '+m.name+')',group:m.group,birthday:m.spouseBirthday}));
-  document.getElementById('tab-content').innerHTML=renderListByMonth([...items,...spouses],m=>m.birthday,()=>'Ulang Tahun');
-}
-
-function renderAnniversaries() {
-  document.getElementById('tab-content').innerHTML=renderListByMonth(
-    filtered.filter(m=>m.anniversary),m=>m.anniversary,()=>'Anniversari Pernikahan');
-}
-
-function renderMilestones() {
-  const items=filtered.filter(m=>m.discipleship&&m.discipleship!=='Belum ikut');
-  if(!items.length){document.getElementById('tab-content').innerHTML='<div class="empty"><i class="ti ti-award"></i>Tidak ada milestone tercatat.</div>';return;}
-  const grouped={};
-  items.forEach(m=>{if(!grouped[m.discipleship]) grouped[m.discipleship]=[]; grouped[m.discipleship].push(m);});
-  document.getElementById('tab-content').innerHTML=Object.entries(grouped).map(([kelas,list])=>`
-    <div class="month-label">${kelas} (${list.length} orang)</div>
-    ${list.map(m=>`<div class="list-row">
-      <div class="avatar ${avColor(m.name)}" style="width:36px;height:36px;font-size:11px;">${initials(m.name)}</div>
-      <div class="list-info">
-        <div class="list-name">${m.name}</div>
-        <div class="list-sub">${m.group||''}${m.ministry&&m.ministry!=='Belum melayani'?' · '+m.ministry:''}</div>
-      </div>
-    </div>`).join('')}`).join('');
-}
-
 function renderOverview() {
   const groups=[...new Set(allMembers.map(m=>m.group).filter(Boolean))].sort();
-  const thisMonthCount=allMembers.filter(m=>isThisMonth(m.birthday)||isThisMonth(m.anniversary)||isThisMonth(m.spouseBirthday)).length;
-  const married=allMembers.filter(m=>m.marital==='Menikah').length;
+  const thisMonthCount=allMembers.filter(m=>isThisMonth(m.birthday)||isThisMonth(m.anniversary)).length;
   const hasDJ=allMembers.filter(m=>m.discipleship&&m.discipleship!=='Belum ikut').length;
   document.getElementById('tab-content').innerHTML=`
     <div class="stat-grid">
@@ -376,7 +426,6 @@ function renderOverview() {
       <div class="stat-card"><div class="stat-label">Care group</div><div class="stat-val">${groups.length}</div></div>
       <div class="stat-card"><div class="stat-label">Event bulan ini</div><div class="stat-val">${thisMonthCount}</div></div>
       <div class="stat-card"><div class="stat-label">Sudah DJ</div><div class="stat-val">${hasDJ}</div></div>
-      <div class="stat-card"><div class="stat-label">Sudah menikah</div><div class="stat-val">${married}</div></div>
     </div>
     <div class="month-label" style="margin-bottom:12px;">Anggota per care group</div>
     ${groups.map(g=>{
@@ -402,39 +451,6 @@ function renderTab() {
   else if(activeTab==='milestones') renderMilestones();
   else if(activeTab==='overview') renderOverview();
 }
-
-function openAdminLogin() {
-  if(isAdmin){
-    isAdmin=false;
-    document.getElementById('admin-btn').innerHTML='<i class="ti ti-lock"></i> Admin';
-    document.getElementById('admin-btn').classList.remove('btn-admin-on');
-    return;
-  }
-  [0,1,2,3].forEach(i=>document.getElementById('p'+i).value='');
-  document.getElementById('pin-error').style.display='none';
-  document.getElementById('admin-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('p0').focus(),100);
-}
-function pinInput(i) {
-  const v=document.getElementById('p'+i).value;
-  if(v&&i<3) document.getElementById('p'+(i+1)).focus();
-  if(i===3&&v) checkFullPin();
-}
-function pinKey(e,i) { if(e.key==='Backspace'&&!document.getElementById('p'+i).value&&i>0) document.getElementById('p'+(i-1)).focus(); }
-function checkFullPin() {
-  const pin=[0,1,2,3].map(i=>document.getElementById('p'+i).value).join('');
-  if(pin.length<4) return;
-  if(pin===ADMIN_PIN){
-    isAdmin=true; closeModal('admin-modal');
-    document.getElementById('admin-btn').innerHTML='<i class="ti ti-lock-open"></i> Admin aktif';
-    document.getElementById('admin-btn').classList.add('btn-admin-on');
-  } else {
-    document.getElementById('pin-error').style.display='block';
-    [0,1,2,3].forEach(i=>document.getElementById('p'+i).value='');
-    document.getElementById('p0').focus();
-  }
-}
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 const now=new Date();
 document.getElementById('month-label').textContent=MONTHS_ID[now.getMonth()]+' '+now.getFullYear();
